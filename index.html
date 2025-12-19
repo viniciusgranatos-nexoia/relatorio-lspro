@@ -17,6 +17,16 @@
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
+        
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -464,6 +474,132 @@
         .footer .brand { color: var(--nexo-primary); font-weight: 600; }
         .footer .tagline { font-style: italic; color: var(--nexo-primary); margin-top: 10px; }
         
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--nexo-dark), #2D4A6F);
+            color: white;
+            padding: 25px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .modal-body h4 {
+            color: var(--nexo-primary);
+            font-size: 1.1rem;
+            margin: 20px 0 10px;
+        }
+        
+        .modal-body h4:first-child {
+            margin-top: 0;
+        }
+        
+        .modal-body p, .modal-body li {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .modal-body ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+        
+        .modal-example {
+            background: var(--gray-50);
+            border-left: 4px solid var(--nexo-primary);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+        
+        .modal-example strong {
+            color: var(--nexo-dark);
+        }
+        
+        .modal-result {
+            background: #ECFDF5;
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+        
+        /* Clickable Score Cards */
+        .score-card.clickable {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .score-card.clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(8, 145, 178, 0.2);
+            border-color: var(--nexo-primary);
+        }
+        
+        .score-card.clickable::after {
+            content: "Clique para saber mais";
+            display: block;
+            font-size: 0.7rem;
+            color: var(--nexo-primary);
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 { font-size: 1.6rem; }
@@ -583,25 +719,25 @@
 
             <div class="card">
                 <h2>🎯 Metodologia HeadLeads IA</h2>
-                <p>A avaliação utiliza três eixos principais com pesos específicos:</p>
+                <p>A avaliação utiliza três eixos principais com pesos específicos. <strong>Clique em cada caixa para entender como funciona:</strong></p>
                 
                 <div class="scores-grid">
-                    <div class="score-card">
+                    <div class="score-card clickable" onclick="openModal('modalPCFI')">
                         <div class="label">PCFI</div>
                         <div class="value">Peso 4</div>
                         <div class="desc">Propósito e Cultura Fit Index</div>
                     </div>
-                    <div class="score-card">
+                    <div class="score-card clickable" onclick="openModal('modalRRI')">
                         <div class="label">RRI</div>
                         <div class="value">Peso 3</div>
                         <div class="desc">Retention Risk Index</div>
                     </div>
-                    <div class="score-card">
+                    <div class="score-card clickable" onclick="openModal('modalFitTecnico')">
                         <div class="label">Fit Técnico</div>
                         <div class="value">Peso 3</div>
                         <div class="desc">Domínio Funcional</div>
                     </div>
-                    <div class="score-card final">
+                    <div class="score-card final clickable" onclick="openModal('modalScore')">
                         <div class="label">HeadLeads Score</div>
                         <div class="value">÷ 10</div>
                         <div class="desc">Nota Final Ponderada</div>
@@ -1077,13 +1213,6 @@
                         </div>
                     </div>
                     <div class="info-item">
-                        <span class="info-icon">📧</span>
-                        <div>
-                            <div class="info-label">E-mail</div>
-                            <div class="info-value" style="font-size: 0.65rem;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="07716e696e646e7274607566696673684769627f686e6673666b62697368742964686a296575">[email&#160;protected]</a></div>
-                        </div>
-                    </div>
-                    <div class="info-item">
                         <span class="info-icon">🌐</span>
                         <div>
                             <div class="info-label">Site</div>
@@ -1097,4 +1226,189 @@
         <!-- Footer -->
         <div class="footer">
             <p><strong class="brand">NEXO IA Talentos</strong></p>
-            <p class="tagline">IA re
+            <p class="tagline">IA responsável. Decisões humanas.</p>
+            <p style="margin-top: 15px;">Relatório gerado em Dezembro/2025</p>
+            <p style="font-size: 0.85rem; margin-top: 10px;">Metodologia HeadLeads IA — Todos os direitos reservados</p>
+        </div>
+    </div>
+
+    <!-- MODAL: PCFI -->
+    <div id="modalPCFI" class="modal" onclick="if(event.target===this)closeModal('modalPCFI')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📊 PCFI — Propósito e Cultura Fit Index</h3>
+                <button class="modal-close" onclick="closeModal('modalPCFI')">✕</button>
+            </div>
+            <div class="modal-body">
+                <h4>O que é?</h4>
+                <p>O PCFI mede o grau de alinhamento entre o <strong>propósito pessoal</strong> do candidato, seus <strong>valores</strong> e seu <strong>estilo de liderança</strong> com a cultura organizacional da empresa contratante.</p>
+                
+                <h4>Por que tem peso 4 (o maior)?</h4>
+                <p>Pesquisas mostram que <strong>61% das contratações erradas</strong> ocorrem por desalinhamento comportamental e cultural, não por falta de competência técnica. Um profissional tecnicamente excelente mas culturalmente desalinhado gera conflitos, desmotiva equipes e tende a sair em menos de 12 meses.</p>
+                
+                <h4>Como é avaliado?</h4>
+                <ul>
+                    <li><strong>Entrevista por competências:</strong> Perguntas situacionais sobre decisões passadas</li>
+                    <li><strong>Análise de trajetória:</strong> Padrões de escolha ao longo da carreira</li>
+                    <li><strong>Valores declarados vs. praticados:</strong> Consistência entre discurso e ações</li>
+                    <li><strong>Estilo de liderança:</strong> Compatibilidade com o modelo da empresa</li>
+                </ul>
+                
+                <div class="modal-example">
+                    <strong>Exemplo prático neste processo:</strong><br>
+                    O candidato Marcos Ribeiro declarou: "Eu no dia a dia sou mais peão do que engenheiro. Não tenho vaidade." — Isso demonstra alinhamento com a cultura "mão na massa" da LSPRO, resultando em PCFI 7,5.
+                </div>
+                
+                <h4>Escala de pontuação</h4>
+                <ul>
+                    <li><strong>9-10:</strong> Alinhamento excepcional — valores e propósito idênticos</li>
+                    <li><strong>7-8:</strong> Bom alinhamento — adaptação natural esperada</li>
+                    <li><strong>5-6:</strong> Alinhamento parcial — requer atenção</li>
+                    <li><strong>Abaixo de 5:</strong> Desalinhamento crítico — alto risco</li>
+                </ul>
+                
+                <div class="modal-result">
+                    <strong>✓ Resultado para a empresa:</strong> Redução de até 35% no turnover e aumento significativo no engajamento das equipes lideradas pelo contratado.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: RRI -->
+    <div id="modalRRI" class="modal" onclick="if(event.target===this)closeModal('modalRRI')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📉 RRI — Retention Risk Index</h3>
+                <button class="modal-close" onclick="closeModal('modalRRI')">✕</button>
+            </div>
+            <div class="modal-body">
+                <h4>O que é?</h4>
+                <p>O RRI avalia o <strong>risco de saída precoce</strong> do candidato, considerando fatores motivacionais, momento de carreira, situação pessoal e histórico de estabilidade.</p>
+                
+                <h4>Por que é importante?</h4>
+                <p>Uma contratação de liderança que falha em menos de 12 meses pode custar até <strong>213% do salário anual</strong> do cargo (recrutamento + onboarding + desligamento + nova busca + impacto na equipe).</p>
+                
+                <h4>Fatores analisados</h4>
+                <ul>
+                    <li><strong>Histórico de permanência:</strong> Tempo médio em empresas anteriores</li>
+                    <li><strong>Motivos de saída:</strong> Padrões de insatisfação ou busca</li>
+                    <li><strong>Momento de vida:</strong> Estabilidade familiar, financeira, geográfica</li>
+                    <li><strong>Expectativa salarial:</strong> Gap entre pretensão e oferta</li>
+                    <li><strong>Motivação real:</strong> O que busca além do salário</li>
+                    <li><strong>Localização:</strong> Proximidade e disposição para deslocamento</li>
+                </ul>
+                
+                <div class="modal-example">
+                    <strong>Exemplo prático neste processo:</strong><br>
+                    O candidato Vinício Moreira tem pretensão de ~R$17.000, mas o teto da vaga é R$12.000 (gap de 50%). Mesmo com excelente fit técnico (9,0), seu RRI foi reduzido para 6,5 pois há risco de aceitar a vaga e sair em poucos meses ao receber proposta melhor.
+                </div>
+                
+                <h4>Escala de pontuação</h4>
+                <ul>
+                    <li><strong>9-10:</strong> Risco muito baixo — alta probabilidade de permanência 3+ anos</li>
+                    <li><strong>7-8:</strong> Risco baixo — boas chances de retenção</li>
+                    <li><strong>5-6:</strong> Risco médio — fatores de atenção identificados</li>
+                    <li><strong>Abaixo de 5:</strong> Risco alto — provável saída em menos de 12 meses</li>
+                </ul>
+                
+                <div class="modal-result">
+                    <strong>✓ Resultado para a empresa:</strong> Maior assertividade na escolha, evitando o ciclo de recontratar para a mesma posição em menos de 1 ano.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Fit Técnico -->
+    <div id="modalFitTecnico" class="modal" onclick="if(event.target===this)closeModal('modalFitTecnico')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔧 Fit Técnico — Domínio Funcional</h3>
+                <button class="modal-close" onclick="closeModal('modalFitTecnico')">✕</button>
+            </div>
+            <div class="modal-body">
+                <h4>O que é?</h4>
+                <p>O Fit Técnico avalia o <strong>domínio funcional</strong> do candidato, incluindo conhecimentos específicos da área, experiência setorial, ferramentas dominadas e amplitude de gestão.</p>
+                
+                <h4>Por que tem peso 3?</h4>
+                <p>Embora fundamental, competências técnicas são mais <strong>treináveis</strong> que comportamentais. Um profissional com bom fit cultural aprende técnicas mais rápido do que alguém tecnicamente perfeito mas culturalmente desalinhado consegue mudar comportamentos.</p>
+                
+                <h4>Critérios avaliados</h4>
+                <ul>
+                    <li><strong>Domínio de ferramentas:</strong> Softwares específicos (ex: MS Project, Primavera, AutoCAD)</li>
+                    <li><strong>Experiência setorial:</strong> Vivência no segmento ou similares</li>
+                    <li><strong>Amplitude de gestão:</strong> Tamanho de equipes e orçamentos geridos</li>
+                    <li><strong>Realizações mensuráveis:</strong> Resultados concretos entregues</li>
+                    <li><strong>Certificações:</strong> Formações complementares relevantes</li>
+                </ul>
+                
+                <div class="modal-example">
+                    <strong>Exemplo prático neste processo:</strong><br>
+                    O candidato Weverton demonstrou na entrevista: "Trabalhei 4 anos com MS Project na Encamp — atividades predecessoras, caminho crítico, metas semanais." Além disso, tem experiência com estruturas metálicas (Tekla) na mineração. Fit Técnico: 8,0.
+                </div>
+                
+                <h4>Escala de pontuação</h4>
+                <ul>
+                    <li><strong>9-10:</strong> Domínio excepcional — pronto para entregar desde o dia 1</li>
+                    <li><strong>7-8:</strong> Domínio sólido — curva de aprendizado curta</li>
+                    <li><strong>5-6:</strong> Domínio parcial — necessita desenvolvimento</li>
+                    <li><strong>Abaixo de 5:</strong> Gap técnico significativo — alto investimento em treinamento</li>
+                </ul>
+                
+                <div class="modal-result">
+                    <strong>✓ Resultado para a empresa:</strong> Redução do tempo de ramp-up e maior velocidade na entrega de resultados desde os primeiros meses.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: HeadLeads Score -->
+    <div id="modalScore" class="modal" onclick="if(event.target===this)closeModal('modalScore')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎯 HeadLeads Score — Nota Final</h3>
+                <button class="modal-close" onclick="closeModal('modalScore')">✕</button>
+            </div>
+            <div class="modal-body">
+                <h4>O que é?</h4>
+                <p>O HeadLeads Score é a <strong>nota final ponderada</strong> que consolida os três eixos de avaliação em um único indicador comparável entre candidatos.</p>
+                
+                <h4>Como é calculado?</h4>
+                <div class="modal-example">
+                    <strong>Fórmula:</strong><br>
+                    (PCFI × 4 + RRI × 3 + Fit Técnico × 3) ÷ 10<br><br>
+                    <strong>Exemplo — Marcos Ribeiro:</strong><br>
+                    (7,5 × 4) + (8,5 × 3) + (7,5 × 3) = 30 + 25,5 + 22,5 = 78 ÷ 10 = <strong>7,8</strong>
+                </div>
+                
+                <h4>Por que essa ponderação (4-3-3)?</h4>
+                <ul>
+                    <li><strong>PCFI (peso 4):</strong> Cultura é o fator mais crítico para sucesso e retenção</li>
+                    <li><strong>RRI (peso 3):</strong> De nada adianta contratar se a pessoa sair em meses</li>
+                    <li><strong>Fit Técnico (peso 3):</strong> Importante, mas treinável se houver fit cultural</li>
+                </ul>
+                
+                <h4>Interpretação do Score</h4>
+                <ul>
+                    <li><strong>8,5 - 10:</strong> Candidato excepcional — prioridade máxima</li>
+                    <li><strong>7,5 - 8,4:</strong> Candidato forte — recomendado para avanço</li>
+                    <li><strong>6,5 - 7,4:</strong> Candidato viável — pontos de atenção a validar</li>
+                    <li><strong>Abaixo de 6,5:</strong> Não recomendado — riscos superam benefícios</li>
+                </ul>
+                
+                <div class="modal-example">
+                    <strong>Neste processo:</strong><br>
+                    • Marcos Ribeiro: 7,8 — Prioritário 1 (pretensão compatível)<br>
+                    • Weverton Nascimento: 7,5 — Prioritário 2 (pretensão compatível)<br>
+                    • Vinício Moreira: 8,3 — Reserva Premium (gap salarial)<br>
+                    • Darllon Silvano: 8,1 — Reserva Premium (gap salarial)
+                </div>
+                
+                <div class="modal-result">
+                    <strong>✓ Resultado para a empresa:</strong> Decisão baseada em dados, não em "feeling". Comparação objetiva entre candidatos com justificativa clara para cada nota.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
